@@ -22,8 +22,6 @@ int main()
     {
         factor[n]++;
     }
-
-
     //Generating SOD & NOD from the Prime Factors
     map <int, int> :: iterator it;
     int nod= 1, sod= 1;

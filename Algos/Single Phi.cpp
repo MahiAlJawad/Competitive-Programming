@@ -21,7 +21,6 @@ int main()
     {
         phi= (phi/n)*(n-1);
     }
-
     // Showing Phi
     cout<<"Phi("<<num<<")= "<<phi<<endl;
 }

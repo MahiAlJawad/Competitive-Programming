@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-int n= 20;
+int n= 192;
 map <int, int> factor;
 int main()
 {
