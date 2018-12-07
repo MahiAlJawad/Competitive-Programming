@@ -47,42 +47,45 @@ else returns POSITIVE in case of LEFT and ZERO when the point is on the line*/
 //TODO: Make these MACRO and also AREA of tangle with three coords.*****Lowerbound, UpperBound, 'set' lower-upper bound
 using namespace std;
 
-ll arr[105];
+ll power(ll x, ll n)
+{
+    ll i;
+    ll ret= 1;
+    for(i= 1; i<=n; i++) ret*= x;
+    return ret;
+}
 
+ll x[30];
 int main()
 {
+    ll tc, i;
+    scanf("%lld", &tc);
 
-    ll n, i;
-    cin>>n;
-    ll mx= neginf;
-    ll sum=0;
-    for(i=1; i<=n; i++)
-    {
-        cin>>arr[i];
-        if(arr[i]>mx) mx= arr[i];
-        sum+= arr[i];
-    }
-    ll a= sum+1;
-    ll k= mx;
-    ll b= 0;
-    for(i= 1; i<=n; i++)
-    {
-        b+= (k- arr[i]);
-    }
+    memset(x, 0, sizeof(x));
+    x[1]= 1;
+    x[2]= 1;
 
-    if(b>=a)
+    for(i= 3; i<=25; i++)
     {
-        cout<<k<<endl;
-        return 0;
+        if(i%2== 1)
+        {
+            x[i]= (2*x[i-1])+1;
+        }
+        else
+        {
+            x[i]= (2*x[i-1])-1;
+        }
     }
 
-    ll x= a-b;
-    ll y= ceil((double)x/(double)n);
-    k+= y;
+    while(tc--)
+    {
+        ll xx;
+        scanf("%lld", &xx);
+        ll y= power(2, xx);
+        cout<<x[xx]<<" "<<y<<" ";
+    }
 
-    cout<<k<<endl;
 
     return 0;
 }
-
 

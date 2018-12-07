@@ -47,40 +47,43 @@ else returns POSITIVE in case of LEFT and ZERO when the point is on the line*/
 //TODO: Make these MACRO and also AREA of tangle with three coords.*****Lowerbound, UpperBound, 'set' lower-upper bound
 using namespace std;
 
-ll arr[105];
+map<ll, ll> factor;
+
+ll nod(ll n)
+{
+    ll i, j, p;
+
+    for(i= 2; i*i<=n; i++)
+    {
+        if(n%i== 0)
+        {
+            while(n%i== 0)
+            {
+                factor[i]++;
+                n/= i;
+            }
+        }
+    }
+    if(n>1)
+    {
+        factor[n]++;
+    }
+
+    ll nod= 1;
+
+    forit(it, factor)
+    {
+        nod*= (it->second+1);
+    }
+
+    return nod;
+}
 
 int main()
 {
-
-    ll n, i;
-    cin>>n;
-    ll mx= neginf;
-    ll sum=0;
-    for(i=1; i<=n; i++)
-    {
-        cin>>arr[i];
-        if(arr[i]>mx) mx= arr[i];
-        sum+= arr[i];
-    }
-    ll a= sum+1;
-    ll k= mx;
-    ll b= 0;
-    for(i= 1; i<=n; i++)
-    {
-        b+= (k- arr[i]);
-    }
-
-    if(b>=a)
-    {
-        cout<<k<<endl;
-        return 0;
-    }
-
-    ll x= a-b;
-    ll y= ceil((double)x/(double)n);
-    k+= y;
-
-    cout<<k<<endl;
+    ll b;
+    cin>>b;
+    cout<<nod(b)<<endl;
 
     return 0;
 }

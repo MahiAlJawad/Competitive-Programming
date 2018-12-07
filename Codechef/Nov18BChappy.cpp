@@ -47,40 +47,53 @@ else returns POSITIVE in case of LEFT and ZERO when the point is on the line*/
 //TODO: Make these MACRO and also AREA of tangle with three coords.*****Lowerbound, UpperBound, 'set' lower-upper bound
 using namespace std;
 
-ll arr[105];
+ll sz[100005];
 
 int main()
 {
+    ll tc, i;
 
-    ll n, i;
-    cin>>n;
-    ll mx= neginf;
-    ll sum=0;
-    for(i=1; i<=n; i++)
+    scanf("%lld", &tc);
+    while(tc--)
     {
-        cin>>arr[i];
-        if(arr[i]>mx) mx= arr[i];
-        sum+= arr[i];
-    }
-    ll a= sum+1;
-    ll k= mx;
-    ll b= 0;
-    for(i= 1; i<=n; i++)
-    {
-        b+= (k- arr[i]);
+        vector<ll> v[100005];
+        memset(sz, 0, sizeof(sz));
+        ll n;
+        scanf("%lld", &n);
+        for(i= 1; i<=n; i++)
+        {
+            ll x;
+            scanf("%lld", &x);
+            v[x].pb(i);
+            sz[x]++;
+        }
+        ll j;
+        bool f= 0;
+        for(i= 1; i<=100000; i++)
+        {
+            if(sz[i]<= 1) continue;
+            ll cnt= 0;
+            ll len= sz[i];
+            for(j= 0; j<len; j++)
+            {
+                ll x= v[i][j];
+                if(sz[x]>=1) cnt++;
+                if(cnt>=2)
+                {
+                    f= 1;
+                    break;
+                }
+            }
+            if(cnt>=2)
+            {
+                f= 1;
+                break;
+            }
+        }
+        if(f) cout<<"Truly Happy\n";
+        else cout<<"Poor Chef\n";
     }
 
-    if(b>=a)
-    {
-        cout<<k<<endl;
-        return 0;
-    }
-
-    ll x= a-b;
-    ll y= ceil((double)x/(double)n);
-    k+= y;
-
-    cout<<k<<endl;
 
     return 0;
 }

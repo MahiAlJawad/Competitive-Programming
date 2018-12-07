@@ -47,42 +47,128 @@ else returns POSITIVE in case of LEFT and ZERO when the point is on the line*/
 //TODO: Make these MACRO and also AREA of tangle with three coords.*****Lowerbound, UpperBound, 'set' lower-upper bound
 using namespace std;
 
-ll arr[105];
+ll dp[500005];
 
 int main()
 {
-
-    ll n, i;
-    cin>>n;
-    ll mx= neginf;
-    ll sum=0;
-    for(i=1; i<=n; i++)
-    {
-        cin>>arr[i];
-        if(arr[i]>mx) mx= arr[i];
-        sum+= arr[i];
-    }
-    ll a= sum+1;
-    ll k= mx;
-    ll b= 0;
+    ll n, q, k;
+    ll i, j;
+    scanf("%lld%lld%lld", &n, &q, &k);
+    string s;
     for(i= 1; i<=n; i++)
     {
-        b+= (k- arr[i]);
+        char c;
+        cin>>c;
+        s+= c;
     }
 
-    if(b>=a)
+    s= s+s+s+s+s;
+    string_reverse(s);
+    memset(dp, 0, sizeof(dp));
+    string qry;
+    cin>>qry;
+
+    ll sz= s.size();
+    ll cnt= 0;
+    //cout<<"s: "<<s<<endl;
+    for(i= 0; i<sz; i++)
     {
-        cout<<k<<endl;
-        return 0;
+        if(s[i]== '0') cnt= 0;
+        else
+        {
+            cnt++;
+            dp[i]= cnt;
+        }
+    }
+//    cout<<"print: ";
+//    for(i= 0; i<sz; i++)
+//    {
+//        cout<<dp[i]<<" ";
+//    }
+//    cout<<endl;
+
+    ll mx= neginf;
+    ll b, e;
+    for(i= 0; i<n; i++)
+    {
+        if(dp[i]>=mx) mx= dp[i], e= i;
+    }
+    b= (e-mx)+1;
+    if(mx== 0)
+    {
+        b= -1;
+        e= -1;
     }
 
-    ll x= a-b;
-    ll y= ceil((double)x/(double)n);
-    k+= y;
+    ll d;
+    if(mx== 0) d=0;
+    else d= (e-b)+1;
+//    cout<<endl<<endl<<endl;
+    //cout<<" b: e: "<<b<<" "<<e<<endl;
+    ll l= 0, r= n-1;
+    for(i= 0; i<q; i++)
+    {
+        if(qry[i]== '!')
+        {
+            l++;
+            r++;
+            if(l>b && l>e) b= -1, e= -1;
+            else if(l>b && l<=e) b= l;
 
-    cout<<k<<endl;
+            if(b== -1 && e== -1) d= 0;
+            else d= (e-b)+1;
+
+            if(s[r]== '1')
+            {
+                //cout<<"d: "<<d<<endl;
+                if((e+1)== r && d!= 0)
+                {
+                    e++;
+                }
+                else //if(dp[r]>=d && d!= 0)
+                {
+                    ll x= max(((r-dp[r])+1), l);
+                    ll y= r;
+                    ll z= (y-x)+1;
+                    if(z>=d)
+                    {
+                        b= x;
+                        e= y;
+                    }
+                }
+                //cout<<" b: e: "<<b<<" "<<e<<endl;
+            }
+            //else cout<<" b: e: "<<b<<" "<<e<<endl;
+            if(b== -1 && e== -1) d= 0;
+            else d= (e-b)+1;
+
+        }
+        else
+        {
+            //cout<<b<<" "<<e<<" ";
+            if(d>k) cout<<k<<"\n";
+            else cout<<d<<"\n";
+        }
+    }
+
 
     return 0;
 }
+/*
+4 9 10
+0 0 1 1
+?!?!?!?!?
 
 
+3 7 10
+0 1 1
+?!?!?!?
+
+1 7 10
+1
+?!?!?!?
+
+4 13 10
+1 0 1 1
+?!?!?!?!?!?!?
+*/
