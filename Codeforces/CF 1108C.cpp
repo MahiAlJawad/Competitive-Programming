@@ -70,68 +70,101 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
 #define setUpperBound(st, elem) st.upper_bound(elem));/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
-#define clearPQ(pq, type) pq= priority_queue<type>()/*It clears a priority queue by redeclaration*/
-#define minPQ(PQ_name, type) priority_queue<type, vector<type>, greater<type> > PQ_name;/*min priority queue with user defined type i.e int or long long etc. */
-#define mod 100000007
+
 /*Macro ends here*/
-//add vector descending sorting
+//add vector descending sorting , min pq
 
 using namespace std;
 
-ll coin[55], limit[55], n, k, dp[55][1005];
 
-ll coin_change(ll i, ll amt)
-{
-    if(amt>k) return 0;
-    if(i>= n+1 || amt>= k)
-    {
-        if(amt== k) return dp[i][amt]= 1;
-        else return dp[i][amt]= 0;
-    }
-    if(dp[i][amt]!= -1) return dp[i][amt];
-    ll j, ways= 0;
-    for(j= 0; j<=limit[i]; j++)
-    {
-        ways+= coin_change(i+1, (amt+coin[i]*j))%mod;
-    }
-    return dp[i][amt]= ways%mod;
-}
 
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    ll t;
-    cin>>t;
-    ll cs= 1;
-    while(t--)
-    {
-        cin>>n>>k;
-        memz(coin);
-        memz(limit);
-        ll i;
-        for(i= 1; i<=n; i++)
-        {
-            cin>>coin[i];
-        }
-        for(i= 1; i<=n; i++)
-        {
-            cin>>limit[i];
-        }
-        memneg(dp);
-        cout<<"Case "<<cs++<<": "<<coin_change(1, 0)<<"\n";
-    }
+    ll len;
+    cin>>len;
+    string s;
+    cin>>s;
 
+    ll i;
+    string t= "";
+    for(i= 0; i<len && i<=2; i++)
+    {
+        t+= s[i];
+    }
+    char tmp[3];
+    for(i=0; i<3; i++) tmp[i]= ' ';
+
+
+    ll sz= t.size();
+    if(sz== 1)
+    {
+        cout<<"0\n";
+        cout<<t<<"\n";
+    }
+    else if(sz== 2)
+    {
+
+        if(t[0]== t[1])
+        {
+            cout<<"1\n";
+            if(t[0]== 'R')
+            {
+                cout<<"RG\n";
+            }
+            else if(t[0]== 'G')
+            {
+                cout<<"GB\n";
+            }
+            else
+            {
+                cout<<"BG\n";
+            }
+        }
+        else
+        {
+            cout<<"0\n"<<t<<"\n";
+        }
+    }
+    else//
+    {
+        ll mn= inf;
+        string ans;
+        vector<char> v;
+        v.pb('B');
+        v.pb('G');
+        v.pb('R');
+
+        do
+        {
+            char a= v[0];
+            char b= v[1];
+            char c= v[2];
+            string tmp= "";
+            ll cnt= 0;
+            for(i= 0; i<len; i+=3)
+            {
+                if(a!= s[i]) cnt++, tmp+= a;
+                else tmp+= a;
+                if((i+1)<len && b!= s[i+1]) cnt++, tmp+=b;
+                else if((i+1)<len) tmp+= b;
+                if((i+2)<len && c!= s[i+2]) cnt++, tmp+= c;
+                else if((i+2)<len) tmp+= c;
+            }
+            if(cnt<mn)
+            {
+                mn= cnt;
+                ans= tmp;
+            }
+            //cout<<a<<b<<c<<" "<<mn<<endl;
+        }while(next_permutation(v.begin(), v.end()));
+        cout<<mn<<"\n"<<ans<<"\n";
+    }
     return 0;
 }
 
-/*
-2
-3 5
-1 2 5 3 2 1
-4 20
-1 2 3 4 8 4 2 1
-*/
+
 
 
 

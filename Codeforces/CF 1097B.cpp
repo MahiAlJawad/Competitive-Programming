@@ -70,68 +70,41 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
 #define setUpperBound(st, elem) st.upper_bound(elem));/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
-#define clearPQ(pq, type) pq= priority_queue<type>()/*It clears a priority queue by redeclaration*/
-#define minPQ(PQ_name, type) priority_queue<type, vector<type>, greater<type> > PQ_name;/*min priority queue with user defined type i.e int or long long etc. */
-#define mod 100000007
+
 /*Macro ends here*/
-//add vector descending sorting
+//add vector descending sorting , min pq
 
 using namespace std;
 
-ll coin[55], limit[55], n, k, dp[55][1005];
-
-ll coin_change(ll i, ll amt)
+ll arr[20];
+ll n;
+bool solve(ll sum, ll i)
 {
-    if(amt>k) return 0;
-    if(i>= n+1 || amt>= k)
+    if(i== n+1)
     {
-        if(amt== k) return dp[i][amt]= 1;
-        else return dp[i][amt]= 0;
+        if((sum%360)== 0) return 1;
+        else return 0;
     }
-    if(dp[i][amt]!= -1) return dp[i][amt];
-    ll j, ways= 0;
-    for(j= 0; j<=limit[i]; j++)
-    {
-        ways+= coin_change(i+1, (amt+coin[i]*j))%mod;
-    }
-    return dp[i][amt]= ways%mod;
-}
+    bool x= solve(sum+arr[i], i+1);
+    bool y= solve(sum-arr[i], i+1);
 
+    return (x||y);
+}
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    ll t;
-    cin>>t;
-    ll cs= 1;
-    while(t--)
+    ll i;
+    cin>>n;
+    for(i= 1; i<=n; i++)
     {
-        cin>>n>>k;
-        memz(coin);
-        memz(limit);
-        ll i;
-        for(i= 1; i<=n; i++)
-        {
-            cin>>coin[i];
-        }
-        for(i= 1; i<=n; i++)
-        {
-            cin>>limit[i];
-        }
-        memneg(dp);
-        cout<<"Case "<<cs++<<": "<<coin_change(1, 0)<<"\n";
+        cin>>arr[i];
     }
-
+    bool x= solve(0, 1);
+    if(x) cout<<"YES\n";
+    else cout<<"NO\n";
     return 0;
 }
 
-/*
-2
-3 5
-1 2 5 3 2 1
-4 20
-1 2 3 4 8 4 2 1
-*/
+
 
 
 

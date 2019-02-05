@@ -70,68 +70,80 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
 #define setUpperBound(st, elem) st.upper_bound(elem));/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
-#define clearPQ(pq, type) pq= priority_queue<type>()/*It clears a priority queue by redeclaration*/
-#define minPQ(PQ_name, type) priority_queue<type, vector<type>, greater<type> > PQ_name;/*min priority queue with user defined type i.e int or long long etc. */
-#define mod 100000007
+
 /*Macro ends here*/
-//add vector descending sorting
+//add vector descending sorting , min pq
 
 using namespace std;
 
-ll coin[55], limit[55], n, k, dp[55][1005];
-
-ll coin_change(ll i, ll amt)
+struct node
 {
-    if(amt>k) return 0;
-    if(i>= n+1 || amt>= k)
+    ll x, y;
+
+    bool operator <(const node &nd) const
     {
-        if(amt== k) return dp[i][amt]= 1;
-        else return dp[i][amt]= 0;
+        if(x== nd.x) return y<nd.y;
+        return x<nd.x;
     }
-    if(dp[i][amt]!= -1) return dp[i][amt];
-    ll j, ways= 0;
-    for(j= 0; j<=limit[i]; j++)
-    {
-        ways+= coin_change(i+1, (amt+coin[i]*j))%mod;
-    }
-    return dp[i][amt]= ways%mod;
-}
+};
 
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    ll t;
-    cin>>t;
-    ll cs= 1;
-    while(t--)
+    ll n;
+    cin>>n;
+    ll i, j;
+    vector<node> a, b;
+    for(i=1; i<=n; i++)
     {
-        cin>>n>>k;
-        memz(coin);
-        memz(limit);
-        ll i;
-        for(i= 1; i<=n; i++)
-        {
-            cin>>coin[i];
-        }
-        for(i= 1; i<=n; i++)
-        {
-            cin>>limit[i];
-        }
-        memneg(dp);
-        cout<<"Case "<<cs++<<": "<<coin_change(1, 0)<<"\n";
+        node nd;
+        ll x, y;
+        cin>>x>>y;
+        nd.x= x;
+        nd.y= y;
+        a.pb(nd);
     }
+
+    for(i=1; i<=n; i++)
+    {
+        node nd;
+        ll x, y;
+        cin>>x>>y;
+        nd.x= x;
+        nd.y= y;
+        b.pb(nd);
+    }
+
+    map<node, ll> mp;
+
+    for(i= 0; i<n; i++)
+    {
+        node xx= a[i];
+        for(j= 0; j<n; j++)
+        {
+            node nd;
+            node yy= b[j];
+            nd.x= xx.x+yy.x;
+            nd.y= xx.y+yy.y;
+            mp[nd]++;
+        }
+    }
+
+    forit(it, mp)
+    {
+        node nd= it->first;
+        ll x= it->second;
+        if(x== n)
+        {
+            cout<<nd.x<<" "<<nd.y<<endl;
+            return 0;
+        }
+    }
+
 
     return 0;
 }
 
-/*
-2
-3 5
-1 2 5 3 2 1
-4 20
-1 2 3 4 8 4 2 1
-*/
+
 
 
 

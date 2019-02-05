@@ -70,68 +70,108 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
 #define setUpperBound(st, elem) st.upper_bound(elem));/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
-#define clearPQ(pq, type) pq= priority_queue<type>()/*It clears a priority queue by redeclaration*/
-#define minPQ(PQ_name, type) priority_queue<type, vector<type>, greater<type> > PQ_name;/*min priority queue with user defined type i.e int or long long etc. */
-#define mod 100000007
+#define clearPQ(pq, type) pq= priority_queue<type>()/*It clears
 /*Macro ends here*/
-//add vector descending sorting
+//add vector descending sorting , min pq
 
 using namespace std;
 
-ll coin[55], limit[55], n, k, dp[55][1005];
-
-ll coin_change(ll i, ll amt)
+ll a[100005], c[100005];
+struct node
 {
-    if(amt>k) return 0;
-    if(i>= n+1 || amt>= k)
-    {
-        if(amt== k) return dp[i][amt]= 1;
-        else return dp[i][amt]= 0;
-    }
-    if(dp[i][amt]!= -1) return dp[i][amt];
-    ll j, ways= 0;
-    for(j= 0; j<=limit[i]; j++)
-    {
-        ways+= coin_change(i+1, (amt+coin[i]*j))%mod;
-    }
-    return dp[i][amt]= ways%mod;
-}
+    ll cost, i;
 
+    bool operator <(const node &nd) const
+    {
+        if(cost== nd.cost) return nd.i<i;
+        return nd.cost<cost;
+    }
+};
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    ll t;
-    cin>>t;
-    ll cs= 1;
-    while(t--)
+    ll n, m, i, j;
+    cin>>n>>m;
+
+    for(i= 1; i<=n; i++) cin>>a[i];
+    priority_queue<node> pq;
+    for(i= 1; i<=n; i++)
     {
-        cin>>n>>k;
-        memz(coin);
-        memz(limit);
-        ll i;
-        for(i= 1; i<=n; i++)
+        node nd;
+        ll x;
+        cin>>x;
+        c[i]= x;
+        nd.cost= x;
+        nd.i= i;
+        pq.push(nd);
+    }
+    bool angry= 0;
+    for(i= 1; i<=m; i++)
+    {
+        ll zro= 0;
+        ll t, d, cost= 0;
+        cin>>t>>d;
+        if(angry)
         {
-            cin>>coin[i];
+            cout<<"0\n";
+            continue;
         }
-        for(i= 1; i<=n; i++)
+        if(a[t]>=d)
         {
-            cin>>limit[i];
+            cost= c[t]*d;
+
+            a[t]= max((a[t]-d),zro) ;
         }
-        memneg(dp);
-        cout<<"Case "<<cs++<<": "<<coin_change(1, 0)<<"\n";
+        else
+        {
+            ll rem= d- a[t];
+            cost= a[t]*c[t];
+            a[t]= 0;
+            //cout<<"init cost: "<<cost<<endl;
+            while(1)
+            {
+                //cout<<"rem: "<<rem<<endl;
+                if(pq.empty())
+                {
+                    angry= 1;
+                    break;
+                }
+                node nd= pq.top();
+                if(a[nd.i]== 0)
+                {
+                    pq.pop();
+                    continue;
+                }
+                ll av= a[nd.i];
+
+                if(av>=rem)
+                {
+                    cost+= rem*c[nd.i];
+                    a[nd.i]= max(av-rem, zro);
+                    break;
+                }
+                else
+                {
+                    cost+= av*c[nd.i];
+                    a[nd.i]= 0;
+                    rem-= av;
+                }
+            }
+            if(angry)
+            {
+                cout<<"0\n";
+                continue;
+            }
+
+        }
+        cout<<cost<<"\n";
     }
 
     return 0;
 }
 
-/*
-2
-3 5
-1 2 5 3 2 1
-4 20
-1 2 3 4 8 4 2 1
-*/
+
 
 
 
