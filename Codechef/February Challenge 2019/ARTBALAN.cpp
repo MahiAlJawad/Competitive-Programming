@@ -78,41 +78,114 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
-map<ll, ll> factorize(ll n)
-{
-    map<ll, ll> factor;
-    //Generating prime factors of n
-    ll i, j, num;
-    num= n;// saving n, so that it doesn't manipulate
-    for(i= 2; i*i<=n; i++)
-    {
-        if(n%i== 0)// n is firstly divisible by a number which is a prime, hence here i is prime if the condition is true
-        {
-            while(n%i== 0)
-            {
-                factor[i]++;
-                n/= i;
-            }
-        }
-    }
-    if(n>1)
-    {
-        factor[n]++;
-    }
-    return factor;
-}
 
 
 int main()
 {
-    ll n;
-    cin>>n;
-    map<ll, ll> fact= factorize(n);
-    vector<ll> v;
-    cout<<n<<" = ";
-    forit(it, fact)
+    //os::sync_with_stdio(false);
+    //cin.tie(0);
+    ll tc;
+    cin>>tc;
+    while(tc--)
     {
-        cout<<it->first<<"^"<<it->second<<" ";
+        string s;
+        cin>>s;
+        map<char, ll> mp;
+        ll i, sz= s.size();
+        for(i= 0; i<sz; i++) mp[s[i]]++;
+        vector<ll> v;
+        ll total= 0;
+        forit(it, mp)
+        {
+            ll x= it->second;
+            v.pb(x);
+            total+= x;
+        }
+        //cout<<"total: "<<total<<endl;
+        sz= v.size();
+        ll p, mn= inf;
+        ll twentysix= 26;
+        sz= min(twentysix, total);
+        for(p= 1; p<=sz; p++)
+        {
+            vector<ll> grt, ls;
+            ll d= 0;
+            if(total%p!= 0) continue;
+            //cout<<"p, m: "<<p<<endl;
+            ll m= p;
+            ll n= total/p;
+            //cout<<"n: "<<n<<endl;
+            for(i= 0; i<v.size(); i++)
+            {
+                ll x= v[i];
+                if(x>n) grt.pb(x);
+                else if(x<n) ls.pb(x);
+                else m--;
+            }
+            //cout<<"ls sz: "<<ls.size()<<" grt sz: "<<grt.size()<<" m: "<<m<<endl;
+            if(m== 0)
+            {
+                mn= 0;
+                continue;
+            }
+
+            //cout<<"d sz after devide: "<<d<<endl;
+            ll sum= 0;
+            for(i= 0; i<grt.size(); i++)
+            {
+                ll x= grt[i];
+                sum+= (x-n);
+            }
+            d+= sum;
+            m-= grt.size();
+            ll szz;
+            if(m>ls.size())
+            {
+                szz= m-ls.size();
+                for(i= 1; i<=szz; i++) ls.pb(0);
+            }
+            //cout<<"sum after fetching from grt: "<<sum<<endl;
+            sort(ls.begin(), ls.end());
+            string_reverse(ls);
+
+            //cout<<"vector ls: ";
+            //for(i= 0; i<ls.size(); i++) cout<<ls[i]<<" ";
+            //cout<<endl;
+
+            for(i= 0; i<ls.size(); i++)
+            {
+                ll x= ls[i];
+                ll need= n-x;
+                ll tm= sum;
+                sum-= min(need, tm);
+                x+= min(need, tm);
+                ls[i]= x;
+                if(sum== 0) break;
+            }
+
+           //cout<<"vector ls after distributing sum: ";
+           //for(i= 0; i<ls.size(); i++) cout<<ls[i]<<" ";
+            //cout<<endl;
+           // cout<<"loop starts*****\n";
+           szz= min(m, (ll)ls.size());
+            for(i= 0; i<szz; i++)
+            {
+                ll x= ls[i];
+                d+= (n-x);
+            }
+            //cout<<"loop finishes*****\n";
+           // cout<<"d after 2d loop  : "<<d<<endl;
+            //cout<<endl;
+            if(d<mn) mn= d;
+        }
+        cout<<mn<<"\n";
     }
+
     return 0;
 }
+
+
+
+
+
+

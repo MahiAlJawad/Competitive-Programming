@@ -78,41 +78,50 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
-map<ll, ll> factorize(ll n)
-{
-    map<ll, ll> factor;
-    //Generating prime factors of n
-    ll i, j, num;
-    num= n;// saving n, so that it doesn't manipulate
-    for(i= 2; i*i<=n; i++)
-    {
-        if(n%i== 0)// n is firstly divisible by a number which is a prime, hence here i is prime if the condition is true
-        {
-            while(n%i== 0)
-            {
-                factor[i]++;
-                n/= i;
-            }
-        }
-    }
-    if(n>1)
-    {
-        factor[n]++;
-    }
-    return factor;
-}
 
 
 int main()
 {
-    ll n;
-    cin>>n;
-    map<ll, ll> fact= factorize(n);
-    vector<ll> v;
-    cout<<n<<" = ";
-    forit(it, fact)
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll t, i, j;
+    cin>>t;
+    while(t--)
     {
-        cout<<it->first<<"^"<<it->second<<" ";
+        ll n;
+        cin>>n;
+        map<char, ll> mp1;
+        string s;
+        for(i= 1; i<=n; i++)
+        {
+            map<char, ll> mp2;
+            cin>>s;
+            ll sz= s.size();
+            for(j= 0; j<sz ;  j++)
+            {
+                if(mp2[s[j]]== 0) mp2[s[j]]++;
+            }
+
+            forit(it, mp2)
+            {
+                char c= it->first;
+                mp1[c]++;
+            }
+        }
+        ll cnt= 0;
+        forit(it, mp1)
+        {
+            if(it->second>=n) cnt++;
+        }
+
+        cout<<cnt<<"\n";
     }
+
     return 0;
 }
+
+
+
+
+
+

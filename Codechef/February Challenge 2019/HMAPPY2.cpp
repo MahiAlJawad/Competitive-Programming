@@ -78,41 +78,30 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
-map<ll, ll> factorize(ll n)
-{
-    map<ll, ll> factor;
-    //Generating prime factors of n
-    ll i, j, num;
-    num= n;// saving n, so that it doesn't manipulate
-    for(i= 2; i*i<=n; i++)
-    {
-        if(n%i== 0)// n is firstly divisible by a number which is a prime, hence here i is prime if the condition is true
-        {
-            while(n%i== 0)
-            {
-                factor[i]++;
-                n/= i;
-            }
-        }
-    }
-    if(n>1)
-    {
-        factor[n]++;
-    }
-    return factor;
-}
 
 
 int main()
 {
-    ll n;
-    cin>>n;
-    map<ll, ll> fact= factorize(n);
-    vector<ll> v;
-    cout<<n<<" = ";
-    forit(it, fact)
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        cout<<it->first<<"^"<<it->second<<" ";
+        ll n, a, b, k;
+        cin>>n>>a>>b>>k;
+        ll g= lcm(a, b);
+        ll x= n/g;
+        ll ans= ((n/a)-x) + ((n/b)-x);
+        if(ans>=k) cout<<"Win\n";
+        else cout<<"Lose\n";
     }
+
     return 0;
 }
+
+
+
+
+
+
