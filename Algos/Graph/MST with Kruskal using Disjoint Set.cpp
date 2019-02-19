@@ -1,9 +1,11 @@
 #include<bits/stdc++.h>
+#define ll long long
+#define memz(x) memset(x, 0, sizeof(x));
 using namespace std;
 
 struct edge
 {
-    int u, v, w;
+    ll u, v, w;
     bool operator < (const edge &a) const
     {
         return w< a.w;
@@ -11,7 +13,7 @@ struct edge
 };
 
 vector <edge> e;
-vector <int> par(51, 0);
+ll par[1005];
 
 int findrep(int r)
 {
@@ -22,9 +24,10 @@ int findrep(int r)
     return par[r];
 }
 
-int MST(int n)
+ll MST(ll n)
 {
-    int i, u, v, count= 0, cost= 0;
+    memz(par);
+    ll i, u, v, cnt= 0, cost= 0;
     sort(e.begin(), e.end());
     for(i= 1; i<= n; i++)
         par[i]= i;// Making set of each node, as learnt in disjoint set DS
@@ -36,11 +39,11 @@ int MST(int n)
         if(u!= v)// if they are not friend yet
         {
             par[u]= v;// Making them friend i.e. making union
-            count++; // counting the number of edges in MST
+            cnt++; // counting the number of edges in MST
             cost+= e[i].w;
         }
 
-        if(count== n-1)// i.e. all the nodes of MST are already found with the minimum cost
+        if(cnt== n-1)// i.e. all the nodes of MST are already found with the minimum cost
             break;
     }
 
@@ -49,7 +52,7 @@ int MST(int n)
 
 int main()
 {
-    int i, u, v, weight, n, edg;
+    ll i, u, v, weight, n, edg;
 
     printf("Enter the number of vertex: ");
     scanf("%d", &n);
