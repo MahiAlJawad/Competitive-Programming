@@ -67,15 +67,15 @@ otherwise returns POSITIVE in case of LEFT and ZERO when the point is on the lin
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
 #define upperBound(v, elem) (upper_bound(v.begin(), v.end(), elem))-v.begin();/*returns the upper bound of 'elem' in integer(ZERO BASED INDEX), where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
-#define setLowerBound(st, elem) st.lower_bound(elem));/*returns the lower bound ITERATOR of 'elem' in the stl set 'st', where lower bound means
+#define setLowerBound(st, elem) st.lower_bound(elem);/*returns the lower bound ITERATOR of 'elem' in the stl set 'st', where lower bound means
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
-#define setUpperBound(st, elem) st.upper_bound(elem));/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
+#define setUpperBound(st, elem) st.upper_bound(elem);/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define clearPQ(pq, type) pq= priority_queue<type>()/*It clears a priority queue by redeclaration*/
 #define minPQ(PQ_name, type) priority_queue<type, vector<type>, greater<type> > PQ_name;/*min priority queue with built in type i.e int or long long etc. */
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
-//add vector descending sorting
+
 
 using namespace std;
 
@@ -84,6 +84,9 @@ using namespace std;
 int main()
 {
     fasterInOut;
+
+
+
 
     return 0;
 }
