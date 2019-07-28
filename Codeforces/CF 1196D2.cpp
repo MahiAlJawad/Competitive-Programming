@@ -79,15 +79,66 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
+ll solve(string s, string t, ll k)
+{
+    ll i, n= s.size(), cnt= 0, j, mn= inf;
+    for(i= 0; i<= (n-k); i++)
+    {
+        if(i== 0)
+        {
+            for(j= 0; j<k; j++)
+            {
+                if(s[j]!= t[j]) cnt++;
+            }
+            mn= min(mn, cnt);
+        }
+        else
+        {
+            if(s[i-1]!= t[i-1]) cnt--;
+            if(s[i+k-1]!= t[i+k-1]) cnt++;
+            mn= min(mn, cnt);
+        }
+    }
+    return mn;
+}
 
-
+string gen(char ch, ll n)
+{
+    ll i;
+    string s;
+    s= ch;
+    for(i= 1; i<n; i++)
+    {
+        if(s[i-1]== 'R') s+= 'G';
+        else if(s[i-1]== 'G') s+= 'B';
+        else if(s[i-1]== 'B') s+= 'R';
+    }
+    return s;
+}
 int main()
 {
     fasterInOut;
+    ll t, n, k, i;
 
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>k;
+        string s, t;
+        cin>>s;
+        ll ans= inf;
+        t= gen('R', n);
+        ans= min(ans, solve(s, t, k));
+        t= gen('G', n);
+        ans= min(ans, solve(s, t, k));
+        t= gen('B', n);
+        ans= min(ans, solve(s, t, k));
+        cout<<ans<<"\n";
+    }
 
 
 
     return 0;
 }
+
 

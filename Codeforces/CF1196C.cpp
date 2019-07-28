@@ -31,8 +31,8 @@
 #define ll long long
 #define lld I64d//for CF submissions
 #define rh cout<<"Reached Here\n"
-#define inf LLONG_MAX
-#define neginf LLONG_MIN
+#define inf LONG_LONG_MAX
+#define neginf LONG_LONG_MIN
 #define forit(it,s) for(__typeof((s).end()) it=(s).begin(); it!= (s).end(); it++)
 #define string_reverse(s) reverse(s.begin(), s.end())//Vector also can be reversed with this function
 #define memz(x) memset(x, 0, sizeof(x));
@@ -67,15 +67,15 @@ otherwise returns POSITIVE in case of LEFT and ZERO when the point is on the lin
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
 #define upperBound(v, elem) (upper_bound(v.begin(), v.end(), elem))-v.begin();/*returns the upper bound of 'elem' in integer(ZERO BASED INDEX), where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
-#define setLowerBound(st, elem) st.lower_bound(elem);/*returns the lower bound ITERATOR of 'elem' in the stl set 'st', where lower bound means
+#define setLowerBound(st, elem) st.lower_bound(elem));/*returns the lower bound ITERATOR of 'elem' in the stl set 'st', where lower bound means
 the LEFTMOST index where there is any integer which is GREATER OR EQUAL to 'elem'.*/
-#define setUpperBound(st, elem) st.upper_bound(elem);/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
+#define setUpperBound(st, elem) st.upper_bound(elem));/*returns the upper bound ITERATOR of 'elem' in the stl set 'st', where upper bound means
 the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define clearPQ(pq, type) pq= priority_queue<type>()/*It clears a priority queue by redeclaration*/
 #define minPQ(PQ_name, type) priority_queue<type, vector<type>, greater<type> > PQ_name;/*min priority queue with built in type i.e int or long long etc. */
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
-
+//add vector descending sorting
 
 using namespace std;
 
@@ -85,9 +85,37 @@ int main()
 {
     fasterInOut;
 
-
-
+    ll q;
+    cin>>q;
+    while(q--)
+    {
+        ll n, i, x, y, a, b, c, d, xmin= -100000, xmax= 100000, ymin= -100000, ymax= 100000;
+        cin>>n;
+        for(i= 1; i<=n; i++)
+        {
+            cin>>x>>y>>a>>b>>c>>d;
+            if(a== 0)
+            {
+                xmin= max(xmin, x);
+            }
+            if(b== 0)
+            {
+                ymax= min(ymax, y);
+            }
+            if(c== 0)
+            {
+                xmax= min(xmax, x);
+            }
+            if(d== 0)
+            {
+                ymin= max(ymin, y);
+            }
+        }
+        if((xmax<xmin) || (ymax<ymin)) cout<<"0\n";
+        else cout<<"1 "<<xmin<<" "<<ymin<<"\n";
+    }
 
     return 0;
 }
+
 
