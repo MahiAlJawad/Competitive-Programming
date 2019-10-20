@@ -76,16 +76,18 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
 
-
 int main()
 {
-    fasterInOut;
-
-
+    //fasterInOut;
 
 
     return 0;
