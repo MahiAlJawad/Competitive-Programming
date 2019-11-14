@@ -84,27 +84,39 @@ using namespace std;
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll n, r, i;
+        cin>>n>>r;
+        set<ll> st;
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            ll x;
+            cin>>x;
+            st.insert(x);
         }
-        else cout<<"Yes\n";
+        deque<ll> dq;
+        forit(it, st)
+        {
+            dq.pb(*it);
+        }
+
+        ll origin= 0;
+        ll cnt= 0;
+        while(!dq.empty())
+        {
+            cnt++;
+            origin+= r;
+            dq.pop_back();
+
+            while(!dq.empty() && dq.front()<= origin)
+            {
+                dq.pop_front();
+            }
+        }
+        cout<<cnt<<"\n";
     }
 
 

@@ -76,38 +76,71 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
 
-
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll n, k, d, i;
+        cin>>n>>k>>d;
+        vector<ll> v(n+1);
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            cin>>v[i];
         }
-        else cout<<"Yes\n";
+        map<ll, ll> mp;
+
+        for(i= 1; i<=d; i++)
+        {
+            mp[v[i]]++;
+        }
+        ll sub= mp.size();
+        ll mn= sub;
+        ll j;
+        for(i= 2, j= d+1; j<=n; j++, i++)
+        {
+            if(i== j)
+            {
+                mp[v[i-1]]--;
+                if(mp[v[i-1]]== 0)
+                {
+                    sub--;
+                }
+                mp[v[i]]++;
+                if(mp[v[i]]== 1)
+                {
+                    sub++;
+                }
+            }
+            else
+            {
+                mp[v[i-1]]--;
+                if(mp[v[i-1]]== 0)
+                {
+                    sub--;
+                }
+
+                mp[v[j]]++;
+                if(mp[v[j]]== 1)
+                {
+                    sub++;
+                }
+            }
+            mn= min(mn, sub);
+        }
+        cout<<mn<<"\n";
     }
-
-
 
     return 0;
 }

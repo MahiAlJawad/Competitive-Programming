@@ -79,32 +79,113 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
+struct data
+{
+    ll x, y;
+    bool v= 0;
+    data(ll a, ll b)
+    {
+        x= a;
+        y= b;
+    }
+};
 
+bool cmp(data a, data b)
+{
+    if(a.x== b.x) return a.y<b.y;
+    return a.x<b.x;
+}
 
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    ll t;
+    cin>>t;
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    while(t--)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll n;
+        cin>>n;
+        vector<data> v;
+        string s;
+        cin>>s;
+        ll i;
+        for(i= 0; i<n; i++)
         {
-            cout<<"No\n";
+            ll x= s[i]-48;
+            ll y= i+1;
+            v.pb(data(x, y));
         }
-        else cout<<"Yes\n";
+        sort(v.begin(), v.end(), cmp);
+
+//        cout<<"show: \n";
+//        for(i= 0; i<v.size(); i++) cout<<"x: "<<v[i].x<<" y: "<<v[i].y<<"\n";
+
+
+
+        ll last= 0;
+        ll p= -1;
+        for(i= 0; i<n; i++)
+        {
+            if(p== -1 && v[i].y<last)
+            {
+                p= v[i].x;
+            }
+            if(p!= -1 && v[i].x>p)
+            {
+                break;
+            }
+            if(p== -1 && v[i].y>last)
+            {
+                last= v[i].y;
+                v[i].v= 1;
+            }
+            else if(p!= -1 && v[i].y>last)
+            {
+                last= v[i].y;
+                v[i].v= 1;
+            }
+        }
+        last= 0;
+        bool f= 1;
+        for(i= 0; i<n; i++)
+        {
+            if(v[i].v== 0 && v[i].y>last)
+            {
+                last= v[i].y;
+            }
+            else if(v[i].v== 0 && v[i].y<last)
+            {
+                f= 0;
+                break;
+            }
+        }
+
+        if(!f)
+        {
+            cout<<"-\n";
+        }
+        else
+        {
+            vector<ll> ans(n+5);
+            for(i= 0; i<n; i++)
+            {
+                if(v[i].v== 1)
+                {
+                    ans[v[i].y]= 1;
+                }
+                else
+                {
+                    ans[v[i].y]= 2;
+                }
+            }
+            for(i= 1; i<=n; i++)
+            {
+                cout<<ans[i];
+            }
+            cout<<"\n";
+        }
+
     }
 
 

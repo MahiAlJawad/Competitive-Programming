@@ -84,29 +84,54 @@ using namespace std;
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    ll n;
+    cin>>n;
+    string s;
+    cin>>s;
 
-    ll sum= 0;
-
+    ll i, j;
+    map<ll, ll> time;
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll a, b;
+        cin>>a>>b;
+        if(s[i-1]== '1')
         {
-            cout<<"No\n";
+            time[0]++;
+            ll next= b;
+            bool f= 1;
+            for(j= 1; j<=100000; j++)
+            {
+                if(j== next)
+                {
+                    f= !f;
+                    next+= a;
+                }
+                if(f) time[j]++;
+            }
         }
-        else cout<<"Yes\n";
-    }
+        else
+        {
+            ll next= b;
+            bool f= 0;
+            for(j= 1; j<=100000; j++)
+            {
+                if(j== next)
+                {
+                    f= !f;
+                    next+= a;
+                }
+                if(f) time[j]++;
+            }
+        }
 
+    }
+    ll mx= 0;
+    forit(it, time)
+    {
+        mx= max(mx, it->second);
+    }
+    cout<<mx<<"\n";
 
 
     return 0;

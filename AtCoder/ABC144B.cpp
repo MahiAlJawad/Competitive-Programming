@@ -76,38 +76,37 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
 
-
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll n;
+    while(cin>>n)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll i;
+        ll a, b;
+        bool f= 0 ;
+        for(i= 1; i<=9; i++)
         {
-            cout<<"No\n";
+            a= i;
+            b= (n/a);
+            if((a*b== n) && a<=9 && b<=9)
+            {
+                cout<<"Yes\n";
+                f= 1;
+                break;
+            }
         }
-        else cout<<"Yes\n";
+        if(f== 0) cout<<"No\n";
     }
-
-
 
     return 0;
 }

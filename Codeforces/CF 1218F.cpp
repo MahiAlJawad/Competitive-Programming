@@ -83,32 +83,48 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll n, k, i;
+    cin>>n>>k;
+    vector<ll> x(n+5), c(n+5);
+    for(i= 1; i<=n; i++)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+        cin>>x[i];
+    }
+    ll a;
+    cin>>a;
+    for(i= 1; i<=n; i++)
+    {
+        cin>>c[i];
     }
 
-    ll sum= 0;
+    priority_queue<ll, vector<ll>, greater<ll> > pq;
+
+    ll cost= 0;
 
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        pq.push(c[i]);
+
+        if(x[i]>k)
         {
-            cout<<"No\n";
+
+            while(!pq.empty() && k<x[i])
+            {
+                cost+= pq.top();
+                k+= a;
+                pq.pop();
+            }
+
+            if(k<x[i])
+            {
+                cout<<"-1\n";
+                return 0;
+            }
         }
-        else cout<<"Yes\n";
     }
 
-
-
+    cout<<cost<<"\n";
     return 0;
 }
 

@@ -84,27 +84,62 @@ using namespace std;
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    ll t, tc= 0;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+        ll n, i, j;
+        cin>>n;
 
-    ll sum= 0;
+        vector<ll> a(n+5), b(n+5);
+        map<ll, ll> vis;
 
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            cin>>a[i];
         }
-        else cout<<"Yes\n";
+        stack<ll> st;
+
+        for(i= 1; i<=n; i++)
+        {
+            cin>>b[i];
+        }
+        ll p= 0;
+        bool f= 1;
+        for(i= 1; i<=n; )
+        {
+            ll x= b[i];
+
+            if(!st.empty() && st.top()== x)
+            {
+                st.pop();
+                i++;
+                continue;
+            }
+            if(vis[x]== 0)
+            {
+                for(j= p+1; j<=n; j++)
+                {
+                    st.push(a[j]);
+                    vis[a[j]]= 1;
+                    if(a[j]== x)
+                    {
+                        p= j;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                f= 0;
+                break;
+            }
+
+        }
+
+        if(f) cout<<"Case "<<++tc<<": POSSIBLE\n";
+        else cout<<"Case "<<++tc<<": IMPOSSIBLE\n";
+
     }
 
 

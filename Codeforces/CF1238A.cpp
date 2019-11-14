@@ -84,27 +84,21 @@ using namespace std;
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll x, y;
+        cin>>x>>y;
+        if((x-y)== 1)
         {
-            cout<<"No\n";
+            cout<<"NO\n";
+
         }
-        else cout<<"Yes\n";
+        else
+        {
+            cout<<"YES\n";
+        }
     }
 
 

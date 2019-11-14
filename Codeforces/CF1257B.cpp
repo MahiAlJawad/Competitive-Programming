@@ -76,38 +76,57 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
+ll power[35], m;
 
+ll getTwo(ll n)
+{
+    m= n;
+    ll cnt= 0;
+    while(n)
+    {
+        if(n%2== 0)
+        {
+            n/= 2;
+            m= n;
+            cnt++;
+        }
+        else break;
+    }
 
+    return cnt;
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+
+    ll t, i;
+    cin>>t;
+    power[0]= 1;
+    for(i= 1; i<=32; i++)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+        power[i]= power[i-1]*3;
+        //cout<<"i: "<<i<<" pow: "<<power[i]<<endl;
     }
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    while(t--)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll x, y;
+        cin>>x>>y;
+        if(y<=x) cout<<"YES\n";
+        else
         {
-            cout<<"No\n";
+            if(x== 1 || x== 3 || (x== 2 && y!= 3)) cout<<"NO\n";
+            else cout<<"YES\n";
         }
-        else cout<<"Yes\n";
     }
-
-
 
     return 0;
 }

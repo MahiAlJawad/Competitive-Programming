@@ -29,7 +29,7 @@
 #define fout(out) freopen("out.txt", "w", stdout)
 #define pb push_back
 #define ll long long
-#define lld I64d//for CF submissions
+//#define lld I64d//for CF submissions
 #define rh cout<<"Reached Here\n"
 #define inf LLONG_MAX
 #define neginf LLONG_MIN
@@ -79,32 +79,47 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
+ll sqrtn(ll n)
+{
+    ll hi= 2e9;
+    ll lo= 1, mid, ans= 0;
+    ll i;
+    while(lo<=hi)
+    {
+        mid= (hi+lo+1)>>1;
+        if(mid*mid>n) hi= mid-1;
+        else
+        {
+            ans= mid;
+            lo= mid+1;
+        }
+    }
 
+    return ans;
+}
+
+ll fun(ll n)
+{
+    ll x= sqrtn(n);
+    ll y;
+    if(x*x== n) y= (n-1)/2;
+    else y= n/2;
+    x+= sqrtn(y);
+    return x;
+}
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    ll t, tc= 0;
+    scanf("%lld", &t);
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    while(t--)
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        ll l, r, a, b;
+        scanf("%lld%lld", &l, &r);
+        a= fun(l-1);
+        b= fun(r);
+        printf("Case %lld: %lld\n", ++tc, (b-a));
     }
 
 

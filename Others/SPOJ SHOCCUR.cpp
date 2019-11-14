@@ -79,37 +79,91 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
-
+ll cnt[100005][30];
 
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
+    ll n, q, i, j;
+    cin>>n>>q;
+    string s;
+    cin>>s;
+    memz(cnt);
+
+    for(i= 0; i<n ; i++)
+    {
+        ll x= s[i]-'a';
+        if(i== 0) cnt[i][x]++;
+        else
+        {
+            cnt[i][x]= cnt[i-1][x]+1;
+
+            for(j= 0; j<=25; j++)
+            {
+                if(j== x) continue;
+                cnt[i][j]= cnt[i-1][j];
+            }
+        }
+    }
+//    cout<<"show count: \n";
+//
+//    for(i= 0; i<n; i++)
+//    {
+//        cout<<"i: "<<i<<" : ";
+//        for(j= 0; j<=25; j++)
+//        {
+//            cout<<(char)(j+'a')<<" "<<cnt[i][j]<<" ";
+//        }
+//        cout<<endl;
+//    }
     for(i= 1; i<=q; i++)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+        ll l, r;
+        cin>>l>>r;
+        l--;
+        r--;
+        if(r<l) swap(l, r);
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll mx= 0;
+        ll p;
+        if(l== 0)
         {
-            cout<<"No\n";
+            for(j= 0; j<=25; j++)
+            {
+                if(cnt[r][j]>mx)
+                {
+                    mx= cnt[r][j];
+                    p= j;
+                }
+            }
         }
-        else cout<<"Yes\n";
+        else
+        {
+            for(j= 0; j<=25; j++)
+            {
+                ll d= cnt[r][j]- cnt[l-1][j];
+                if(d>mx)
+                {
+                    mx= d;
+                    p= j;
+                }
+            }
+        }
+        char c= p+'a';
+        cout<<c<<" "<<mx<<"\n";
     }
+
 
 
 
     return 0;
 }
-
-
+/*
+13 5
+abbacccdefgha
+1 13
+1 10
+3 6
+11 12
+8 12
+*/

@@ -83,30 +83,44 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    //fasterInOut;
+    string s;
+    cin>>s;
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    ll i, j;
+    ll n= s.size();
+    vector<ll> lastmin(n+1);
+    char mn= s[0];
+    lastmin[0]= 0;
+    i= 1;
+    while(i<n)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        //cout<<"mn: "<<mn<<" si: "<<s[i]<<endl;
+        if(s[i]<=mn)
         {
-            cout<<"No\n";
+            mn= s[i];
+            lastmin[i]= i;
         }
-        else cout<<"Yes\n";
+        else
+        {
+            lastmin[i]= lastmin[i-1];
+        }
+        i++;
     }
 
+//    cout<<"show last: \n";
+//    for(i= 0; i<n; i++)
+//    {
+//        cout<<lastmin[i]<<" ";
+//    }
+//    cout<<endl;
+
+    for(i= 0; i<n; i++)
+    {
+
+        if(lastmin[i]== i) cout<<"Mike\n";
+        else cout<<"Ann\n";
+    }
 
 
     return 0;

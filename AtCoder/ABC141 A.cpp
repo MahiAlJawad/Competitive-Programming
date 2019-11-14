@@ -83,29 +83,12 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
-    }
+    //fasterInOut;
+    string s;
+    cin>>s;
+    if(s== "Sunny") cout<<"Cloudy\n";
+    else if(s== "Cloudy") cout<<"Rainy\n";
+    else cout<<"Sunny\n";
 
 
 

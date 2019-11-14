@@ -79,34 +79,68 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
+vector<ll> g[8];
+
+struct data
+{
+    ll x, c= 0, d;
+    data(ll p, ll cnt)
+    {
+        x= p;
+        c= cnt;
+    }
+};
+vector<data> nodes;
+
+struct domino
+{
+    ll a, b;
+    domino(ll x, ll y)
+    {
+        a= x;
+        b= y;
+    }
+
+    bool operator < (const domino &d) const
+    {
+        if(a== d.a) return b<d.b;
+        return a<d.a;
+    }
+};
+
+map<domino, bool> dominos;
 
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll n, m, i, j;
+    cin>>n>>m;
+    for(i= 1; i<=m; i++)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+        ll u, v;
+        cin>>u>>v;
+        g[u].pb(v);
+        g[v].pb(u);
     }
-
-    ll sum= 0;
-
+    ll src, p= 0;
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        if(g[i].size()!= 0) nodes.pb(data(i, g[i].size()));
+        if(g[i].size()>p)
         {
-            cout<<"No\n";
+            p= g[i].size();
+            src= i;
         }
-        else cout<<"Yes\n";
     }
 
+    for(i= 1; i<=6; i++)
+    {
+        for(j= i; j<=6; j++)
+        {
+            dominos[domino(i, j)]= 0;
+        }
+    }
 
 
     return 0;

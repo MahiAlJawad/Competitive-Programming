@@ -83,32 +83,42 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll n, k, i, j;
+
+    cin>>n>>k;
+    vector<ll> arr(n+5), dp(n+5, 0);
+    for(i= 1; i<=n; i++)
     {
         ll x;
         cin>>x;
-        mp[x]++;
+        arr[i]= x;
+        dp[i]= dp[i-1]+arr[i];
     }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    ll cnt= 0;
+    for(i= 1, j= 1; i<=n && j<=n; )
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        //cout<<"i: "<<i<<" j: "<<j<<endl;
+        ll sum= dp[j]-dp[i-1];
+        if(sum>=k)
         {
-            cout<<"No\n";
+            cnt+= ((n-j)+1);
+            if(i== j)
+            {
+                i++;
+                j++;
+            }
+            else
+            {
+                i++;
+            }
         }
-        else cout<<"Yes\n";
+        else
+        {
+            j++;
+        }
     }
-
-
-
+    cout<<cnt<<"\n";
     return 0;
 }
 

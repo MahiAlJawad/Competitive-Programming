@@ -83,29 +83,30 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    //fasterInOut;
 
-    ll sum= 0;
-
+    ll n, i;
+    cin>>n;
+    vector<ll> v(n+5);
+    ll mx= -1;
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        cin>>v[i];
+        mx= max(mx, v[i]);
     }
+    ll g= 0;
+    for(i= 1; i<=n; i++)
+    {
+        ll d= mx-v[i];
+        g= gcd(g, d);
+    }
+    ll person= 0;
+    for(i= 1; i<=n; i++)
+    {
+        ll d= mx-v[i];
+        person+= (d/g);
+    }
+    cout<<person<<" "<<g<<"\n";
 
 
 

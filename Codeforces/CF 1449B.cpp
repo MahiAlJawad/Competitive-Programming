@@ -76,38 +76,82 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
+vector<ll> parent, setsize;
 
+
+void makeSet(ll v)
+{
+    parent[v]= v;
+    setsize[v]= 1;
+}
+
+ll findSet(ll v)
+{
+    if (v == parent[v]) return v;
+    return parent[v] = findSet(parent[v]);
+}
+
+void unionSet(ll a, ll b)
+{
+    a = findSet(a);
+    b = findSet(b);
+    if (a != b)
+    {
+        if (setsize[a] < setsize[b]) swap(a, b);
+        parent[b] = a;
+        setsize[a] += setsize[b];
+    }
+}
+
+bool isSameSet(ll a, ll b)
+{
+    if(findSet(a)== findSet(b)) return 1;
+    else return 0;
+}
+
+ll sizeofSet(ll v)
+{
+    return setsize[findSet(v)];
+}
 
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll n, i;
+        cin>>n;
+        vector<ll> v(n+5);
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            cin>>v[i];
         }
-        else cout<<"Yes\n";
+        parent= vector<ll> (n+5);
+        setsize= vector<ll> (n+5);
+
+        for(i= 1; i<=n; i++) makeSet(i);
+
+        for(i= 1; i<=n; i++)
+        {
+            if(!isSameSet(i, v[i])) unionSet(i, v[i]);
+        }
+
+        for(i= 1; i<=n; i++)
+        {
+            cout<<sizeofSet(v[i])<<" ";
+        }
+        cout<<"\n";
     }
-
-
 
     return 0;
 }

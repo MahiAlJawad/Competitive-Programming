@@ -78,36 +78,65 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 
 using namespace std;
+vector<vector<ll> > arr;
+bool IsIncreasing(ll n, ll m)
+{
+    ll i, j;
+    for(i= 1; i<=n; i++)
+    {
+        for(j= 2; j<=m; j++)
+        {
+            if(arr[i][j]<=arr[i][j-1]) return 0;
+        }
+    }
 
-
+    for(j= 1; j<=m; j++)
+    {
+        for(i= 2; i<=n; i++)
+        {
+            if(arr[i][j]<=arr[i-1][j]) return 0;
+        }
+    }
+    return 1;
+}
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
+    //fasterInOut;
+    ll n, m, i, j;
+    cin>>n>>m;
+    arr= vector<vector<ll> > (n+5, vector<ll> (m+5));
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        for(j= 1; j<=m; j++) cin>>arr[i][j];
     }
 
+    for(i= n; i>=1; i--)
+    {
+        for(j= m; j>=1; j--)
+        {
+            if(arr[i][j]== 0)
+            {
+                ll x= arr[i][j+1];
+                ll y= arr[i+1][j];
+                arr[i][j]= min(x-1, y-1);
+            }
+        }
+    }
 
+    if(IsIncreasing(n, m))
+    {
+        ll sum= 0;
+        for(i= 1; i<=n; i++)
+        {
+            for(j= 1; j<=m; j++) sum+= arr[i][j];
+        }
+        cout<<sum<<"\n";
+    }
+    else
+    {
+        cout<<"-1\n";
+    }
 
     return 0;
 }

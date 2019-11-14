@@ -80,35 +80,72 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 using namespace std;
 
 
-
+ll fun(ll n)
+{
+    return (n*(n+1))/2;
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll n, i;
+    cin>>n;
+    vector<ll> neg;
+    for(i= 1;i<=n; i++)
     {
         ll x;
         cin>>x;
-        mp[x]++;
+        if(x<0) neg.pb(i);
     }
+
+    ll sz= neg.size();
+    if(sz== 0)
+    {
+        cout<<"0 "<<fun(n)<<endl;
+        return 0;
+    }
+//    cout<<"show neg: \n";
+//    for(i= 0; i<sz; i++) cout<<neg[i]<<" ";
+//    cout<<endl;
+
+    vector<ll> v(sz+5);
+    ll j= 1;
+    for(i= 0; i<sz; i++)
+    {
+        if(i== 0)
+        {
+            v[j++]= neg[i];
+        }
+        else
+        {
+            v[j++]= (neg[i]-neg[i-1]);
+        }
+    }
+
+    v[j]= (n-neg[sz-1])+1;
+    ll ans= 0;
+
+    sz= j;
+
+//    cout<<"v print\n";
+//    for(i= 1;i<=sz; i++) cout<<v[i]<<" ";
+//    cout<<endl;
 
     ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    for(i= sz; i>=1; i-= 2)
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        ans+= fun((ll)v[i]-1);
+        ans+= ((ll)v[i])*sum;
+        sum+= v[i];
+    }
+    sum= 0;
+    for(i= sz-1; i>=1; i-= 2)
+    {
+        ans+= fun((ll)v[i]-1);
+        ans+= ((ll)v[i])*sum;
+        sum+= v[i];
     }
 
-
-
+    cout<<fun(n)-ans<<" "<<ans<<"\n";
     return 0;
 }
 

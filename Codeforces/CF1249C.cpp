@@ -76,38 +76,111 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
-
-
+vector<ll> power(40);
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
+    ll t;
+    cin>>t;
+    power[0]= 1;
     ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    for(i= 1; i<=38; i++)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+        power[i]= power[i-1]*3;
     }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    while(t--)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll n;
+        cin>>n;
+        ll tmp= n;
+        vector<ll> v;
+        while(1)
         {
-            cout<<"No\n";
+            if(tmp== 0)
+            {
+                break;
+            }
+            v.pb((tmp%3));
+            tmp/= 3;
         }
-        else cout<<"Yes\n";
+
+
+        reverse(v.begin(), v.end());
+        ll pos= inf;
+        //cout<<"string: ";
+//        for(i= 0; i<v.size(); i++)
+//        {
+//            cout<<v[i];
+//        }
+//        cout<<endl;
+        for(i= 0; i<v.size(); i++)
+        {
+            if(v[i]== 2)
+            {
+                pos= i;
+                break;
+            }
+        }
+        if(pos== inf)
+        {
+            //cout<<"ans: ";
+            cout<<n<<"\n";
+            continue;
+        }
+        bool f= 0;
+        ll j;
+        //cout<<"pos: "<<pos<<endl;
+        for(i= pos-1; i>=0; i--)
+        {
+
+            if(v[i]== 0)
+            {
+                f= 1;
+                v[i]= 1;
+                for(j= i+1; j<v.size(); j++)
+                {
+                    v[j]= 0;
+                }
+                break;
+            }
+        }
+
+//        cout<<"string after: ";
+//        for(i= 0; i<v.size(); i++)
+//        {
+//            cout<<v[i];
+//        }
+//        cout<<endl;
+        ll k= v.size();
+        //cout<<"f: "<<f<<endl;
+
+        if(!f)
+        {
+            //cout<<"ans1: ";
+            cout<<power[k]<<"\n";
+        }
+        else
+        {
+
+            ll sum= 0;
+            k--;
+            //cout<<"k: "<<k<<endl;
+            for(i= 0; i<v.size(); i++)
+            {
+                sum+= (power[k--]*v[i]);
+            }
+            //cout<<"ans2: ";
+            cout<<sum<<"\n";
+        }
     }
-
-
 
     return 0;
 }

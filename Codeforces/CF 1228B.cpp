@@ -75,40 +75,114 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define minPQ(PQ_name, type) priority_queue<type, vector<type>, greater<type> > PQ_name;/*min priority queue with built in type i.e int or long long etc. */
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
-
+#define mod 1000000007
 
 using namespace std;
 
+ll mat[1005][1005];
 
-
-int main()
+ll GetAns(ll n)
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
+    ll i, ret= 1;
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        ret*= 2;
+        ret%= mod;
+    }
+    return ret%mod;
+}
+
+void show(ll h, ll w)
+{
+    ll i, j;
+    cout<<"show mat: \n";
+    for(i= 1; i<=h; i++)
+    {
+        for(j= 1; j<=w; j++)
         {
-            cout<<"No\n";
+            if(mat[i][j]== -1 ) cout<<"k ";
+            else cout<<mat[i][j]<<" ";
         }
-        else cout<<"Yes\n";
+        cout<<endl;
+    }
+}
+int main()
+{
+    //fasterInOut;
+    ll h, w;
+    cin>>h>>w;
+    ll i, j;
+    bool impossible= 0;
+    memneg(mat);
+    for(i= 1; i<=h; i++)
+    {
+        ll r;
+        cin>>r;
+        //cout<<"r: "<<r<<endl;
+        if(r== 0)
+        {
+            mat[i][1]= 0;
+        }
+        else if(r== w)
+        {
+            for(j= 1; j<=r; j++) mat[i][j]= 1;
+        }
+        else
+        {
+            for(j= 1; j<=r; j++) mat[i][j]= 1;
+            mat[i][r+1]= 0;
+        }
+
     }
 
-
-
+    for(i= 1; i<=w; i++)
+    {
+        ll c;
+        cin>>c;
+        //continue;
+        //if(i== 16) show(h, w);
+        if(c== 0)
+        {
+            if(mat[1][i]== 1) impossible= 1;
+            mat[1][i]= 0;
+        }
+        else if(c== h)
+        {
+            for(j= 1; j<=c; j++)
+            {
+                if(mat[j][i]== 0) impossible= 1;
+                mat[j][i]= 1;
+            }
+        }
+        else
+        {
+            for(j= 1; j<=c; j++)
+            {
+                if(mat[j][i]== 0) impossible= 1;
+                mat[j][i]= 1;
+            }
+            if(mat[c+1][i]==1) impossible= 1;
+            else mat[c+1][i]= 0;
+        }
+        if(impossible) break;
+        //if(i== 16) show(h, w);
+    }
+    if(impossible)
+    {
+        cout<<"0\n";
+        return 0;
+    }
+    ll cnt= 0;
+    for(i= 1; i<=h; i++)
+    {
+        for(j= 1; j<=w; j++)
+        {
+            if(mat[i][j]== -1) cnt++;
+        }
+    }
+    //show(h, w);
+    //cout<<"cnt: "<<cnt<<endl;
+    cout<<GetAns(cnt)<<"\n";
     return 0;
 }
 

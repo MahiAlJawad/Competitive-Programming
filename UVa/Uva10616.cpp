@@ -76,38 +76,57 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
+ll n, m, d, q;
+ll arr[205], dp[205][15][300];
 
-
+ll solve(ll i, ll j, ll amt)
+{
+    if(i== n+1 || j== m+1)
+    {
+        if(j== m+1 && amt%d== 0)
+        {
+            return 1;
+        }
+        else return 0;
+    }
+    if(dp[i][j][amt]!= -1) return dp[i][j][amt];
+    ll x= 0, y= 0;
+    x= solve(i+1, j+1, (amt+(arr[i]%d))%d);
+    y= solve(i+1, j, amt);
+    return dp[i][j][amt]= (x+y);
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+    ll tc= 0;
+    //fasterInOut;
+    while(scanf("%lld%lld", &n, &q))
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        if(n== 0 && q== 0) break;
+        printf("SET %lld:\n", ++tc);
+        memz(arr);
+        ll i;
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            cin>>arr[i];
         }
-        else cout<<"Yes\n";
+        for(i= 1; i<=q;i++)
+        {
+            scanf("%lld%lld", &d, &m);
+            memneg(dp);
+            printf("QUERY %lld: %lld\n", i, solve(1, 1, 0));
+        }
     }
-
-
 
     return 0;
 }

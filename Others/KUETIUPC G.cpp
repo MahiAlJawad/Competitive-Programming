@@ -79,32 +79,182 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
+ll sum= 0;
+vector<vector<ll> > g;
+vector<ll> dp, comp, compsum, comptype;
+
+struct node
+{
+    ll u, v;
+
+    node(ll a, ll b)
+    {
+        u= a;
+        v= b;
+    }
+    bool operator < (const node &nd) const
+    {
+        if(u== nd.u) return v<nd.v;
+        else return u<nd.u;
+    }
+};
+
+map<node, ll> cost;
+
+void solve(ll src, ll k, ll type)
+{
+    //cout<<"src: "<<src<<" k: "<<k<<" type: "<<type<<endl;
+    sum= 0;
+    dp[src]= 0;
+    ll i;
+    comptype[k]= type;
+    queue<ll> q;
+    q.push(src);
+    comp[src]= k;
+    if(g[src].size()== 2)
+    {
+        ll tmp= g[src][1];
+        sum+= cost[node(src, tmp)];
+    }
+    ll tm;
+    while(!q.empty())
+    {
+        ll u= q.front();
+        //cout<<"u: "<<u<<" v: ";
+        q.pop();
+        ll lim;
+        if(u== src) lim= 1;
+        else lim= g[u].size();
+
+        for(i= 0; i<lim; i++)
+        {
+            ll v= g[u][i];
+            //cout<<v<<" ";
+            if(dp[v]== -1)
+            {
+                dp[v]= dp[u]+cost[node(u, v)];
+                q.push(v);
+                comp[v]= k;
+                tm= dp[v];
+            }
+        }
+        //cout<<endl;
+    }
+    sum+= tm;
+    compsum[k]= sum;
+}
 
 
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    ll t, tc= 0;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+        ll n, e, i;
+        cin>>n>>e;
+        g= vector<vector<ll> > (n+5);
+        comp= vector<ll> (n+5, 0);
+        compsum= vector<ll> (n+5, 0);
+        comptype= vector<ll> (n+5, 0);
+        cost.clear();
+        dp= vector<ll> (n+5, -1);
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        if(e== 0)
         {
-            cout<<"No\n";
+            ll q;
+            cin>>q;
+            cout<<"Case "<<++tc<<":\n";
+            while(q--)
+            {
+                ll u, v;
+                cin>>u>>v;
+                cout<<"-1\n";
+            }
+            continue;
         }
-        else cout<<"Yes\n";
+        for(i= 1; i<=e; i++)
+        {
+            ll u, v, w;
+            cin>>u>>v>>w;
+            g[u].pb(v);
+            g[v].pb(u);
+            cost[node(u, v)]= w;
+            cost[node(v, u)]= w;
+            sum+= w;
+        }
+
+//        cout<<"show adj: \n";
+//        for(i= 1; i<=n; i++)
+//        {
+//            cout<<i<<" : ";
+//            for(ll j= 0; j<g[i].size(); j++)
+//            {
+//                cout<<g[i][j]<<" ";
+//            }
+//            cout<<endl;
+//        }
+        ll k= 1;
+        for(i= 1; i<=n; i++)
+        {
+            if(dp[i]== -1 && g[i].size()== 1)
+            {
+                solve(i, k++, 1);
+            }
+        }
+        for(i= 1; i<=n; i++)
+        {
+            if(dp[i]== -1 && g[i].size()>1)
+            {
+                solve(i, k++, 2);
+            }
+        }
+
+        ll q;
+        cin>>q;
+        cout<<"Case "<<++tc<<":\n";
+        while(q--)
+        {
+            ll u, v;
+            cin>>u>>v;
+            if(comp[u]!= comp[v])
+            {
+                cout<<"-1\n";
+                continue;
+            }
+            if(u== v)
+            {
+                cout<<"0\n";
+                continue;
+            }
+            if(comptype[comp[u]]== 1)
+            {
+                ll x= dp[u];
+                ll y= dp[v];
+
+                if(x== -1 || y== -1)
+                {
+                    cout<<"-1\n";
+                    continue;
+                }
+                if(x<y) swap(x, y);
+                cout<<(x-y)<<"\n";
+            }
+            else
+            {
+                ll x= dp[u];
+                ll y= dp[v];
+                if(x== -1 || y== -1)
+                {
+                    cout<<"-1\n";
+                    continue;
+                }
+                if(x<y) swap(x, y);
+                cout<< min((x-y),(compsum[comp[u]]-(x-y)))<<"\n";
+            }
+        }
+
     }
 
 
@@ -112,4 +262,61 @@ int main()
     return 0;
 }
 
+/*
+4
 
+4 3
+1 3 4
+2 3 3
+1 4 1
+4
+2 1
+2 3
+1 3
+2 4
+
+12 10
+1 2 10
+2 3 15
+3 4 5
+4 5 2
+1 5 3
+7 8 2
+8 9 3
+10 11 5
+11 12 6
+10 12 2
+18
+2 3
+3 4
+1 4
+4 5
+1 5
+1 3
+1 2
+6 1
+5 5
+7 9
+7 8
+7 10
+7 3
+10 12
+10 11
+12 1
+7 7
+6 6
+
+2 0
+3
+1 1
+2 1
+1 2
+
+2 1
+1 2 5
+2
+1 2
+2 1
+
+
+*/

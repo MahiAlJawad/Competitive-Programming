@@ -79,32 +79,83 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
+ll n;
+vector<vector<vector<int> > > dp;
+vector<vector<ll> > mat;
+ll solve(ll i, ll j, ll pstate)
+{
+    //cout<<"i: "<<i<<" j: "<<j<<" pstate: "<<pstate<<endl;
+    if(j>n)
+    {
+        if(i== 1) return 0;
+        else return 1;
+    }
+    if(dp[i][j][pstate]!= -1) return dp[i][j][pstate];
 
+    if(pstate== 1)
+    {
+        if(mat[i][j]<=2)
+        {
+            return dp[i][j][pstate]= solve(i, j+1, 1);
+        }
+        else
+        {
+            if(i== 1)
+            {
+                return dp[i][j][pstate]= solve(i+1, j, 2);
+            }
+            else
+            {
+                return dp[i][j][pstate]= solve(i-1, j, 2);
+            }
+        }
+    }
+    else
+    {
+        if(mat[i][j]<=2)
+        {
+            return dp[i][j][pstate]= 0;
+        }
+        else
+        {
+            if(i== 1)
+            {
+                return dp[i][j][pstate]= solve(i, j+1, 1);
+            }
+            else
+            {
+                return dp[i][j][pstate]= solve(i, j+1, 1);
+            }
+        }
+    }
+
+}
 
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        cin>>n;
+        ll i, j;
+        mat= vector<vector<ll> > (4, vector<ll> (n+5));
+        for(i= 1; i<=2; i++)
         {
-            cout<<"No\n";
+            for(j= 1; j<=n; j++)
+            {
+                char c;
+                cin>>c;
+                mat[i][j]= (c-48);
+            }
         }
-        else cout<<"Yes\n";
+        dp= vector<vector<vector<int> > > (4, vector< vector<int> > (n+5, vector<int> (4, -1)));
+
+        ll ans= solve(1, 1, 1);
+        if(ans== 1) cout<<"YES\n";
+        else cout<<"NO\n";
     }
 
 

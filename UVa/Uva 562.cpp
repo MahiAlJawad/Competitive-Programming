@@ -76,38 +76,51 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
+ll coin[105], dp[105][50005], total, n;
 
-
+ll solve(ll i, ll sum)
+{
+    if(i== n+1)
+    {
+        ll b= total-sum;
+        ll a= sum;
+        //cout<<"a: "<<a<<" b: "<<b<<endl;
+        return abs(a-b);
+    }
+    if(dp[i][sum]!= -1) return dp[i][sum];
+    ll x= solve(i+1, sum+coin[i]);
+    ll y= solve(i+1, sum);
+    return dp[i][sum]= min(x, y);
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    //freopen("in.txt","r", stdin);
+    //freopen("out.txt", "w", stdout);
+    ll t;
+    scanf("%lld", &t);
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll i;
+        memz(coin);
+        total= 0;
+        scanf("%lld", &n);
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            scanf("%lld", &coin[i]);
+            total+= coin[i];
         }
-        else cout<<"Yes\n";
+        memneg(dp);
+        printf("%lld\n", solve(1, 0));
     }
-
-
 
     return 0;
 }

@@ -83,30 +83,37 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll n, k, i;
+    cin>>n>>k;
+    deque<ll> dq;
+    map<ll, bool> mp;
+    for(i= 1; i<=n; i++)
     {
         ll x;
         cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        if(mp[x]== 1) continue;
+        if(dq.size()>=k)
         {
-            cout<<"No\n";
+            ll tp= dq.front();
+            mp[tp]= 0;
+            dq.pop_front();
+            dq.push_back(x);
+            mp[x]= 1;
         }
-        else cout<<"Yes\n";
+        else
+        {
+            dq.push_back(x);
+            mp[x]= 1;
+        }
     }
-
+    cout<<dq.size()<<"\n";
+    while(!dq.empty())
+    {
+        cout<<dq.back()<<" ";
+        dq.pop_back();
+    }
+    cout<<"\n";
 
 
     return 0;

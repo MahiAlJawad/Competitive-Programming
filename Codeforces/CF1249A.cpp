@@ -76,37 +76,47 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
 
-
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    //fasterInOut;
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        ll n, i;
+        cin>>n;
+        vector<ll> v(n);
+        for(i= 0; i<n; i++)
         {
-            cout<<"No\n";
+            cin>>v[i];
         }
-        else cout<<"Yes\n";
-    }
 
+        sort(v.begin(), v.end());
+        bool f= 0;
+        for(i= 1; i<n; i++)
+        {
+            if(((ll)v[i]-(ll)v[i-1])== 1)
+            {
+                f= 1;
+                break;
+            }
+        }
+        if(f)
+        {
+            cout<<2<<"\n";
+        }
+        else cout<<"1\n";
+    }
 
 
     return 0;

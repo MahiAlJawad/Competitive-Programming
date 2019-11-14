@@ -76,38 +76,105 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
-
+vector<ll> a, b;
 
 int main()
 {
     fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+        ll n, i, j;
+        cin>>n;
+        //cout<<"n: "<<n<<"\n";
+        ll ans= 0, zero= 0, one= 0;
+        a= vector<ll> (n, 0);
+        b= vector<ll> (n, 0);
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        vector<string> v;
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            string s;
+            cin>>s;
+            v.pb(s);
+
         }
-        else cout<<"Yes\n";
+        for(i= 0; i<n; i++)
+        {
+            string s= v[i];
+            if(s.size()%2== 1)
+            {
+                ans++;
+                for(j= 0; j<s.size(); j++)
+                {
+                    if(s[j]== '0') zero++;
+                    else one++;
+                }
+            }
+        }
+        //cout<<"ans b: "<<ans<<endl;
+        for(i= 0; i<n; i++)
+        {
+            string s= v[i];
+            if(s.size()%2== 1) continue;
+            ll z= 0, on= 0;
+            for(j= 0; j<s.size(); j++)
+            {
+                if(s[j]== '0') z++;
+                else on++;
+            }
+            if(z%2== 0)
+            {
+                ans++;
+                a[i]= -1;
+                b[i]= -1;
+            }
+            else
+            {
+                a[i]= z;
+                b[i]= on;
+            }
+
+        }
+        ll cnt= 0;
+        bool f= 0;
+        for(i= 0; i<n; i++)
+        {
+            string s= v[i];
+            if(s.size()%2== 1 || a[i]== -1) continue;
+            cnt++;
+        }
+        //cout<<"cnt: "<<cnt<<endl;
+        if(cnt%2== 0) ans+= cnt;
+        else
+        {
+            for(i= 0; i<n; i++)
+            {
+                string s= v[i];
+                if(s.size()%2== 1 || a[i]== -1) continue;
+                if(zero>0 || one>0)
+                {
+                    f= 1;
+                    break;
+                }
+
+            }
+            if(f) ans+= cnt;
+            else ans+= (cnt-1);
+        }
+        //cout<<"ans: ";
+        cout<<ans<<"\n";
+
     }
-
-
 
     return 0;
 }

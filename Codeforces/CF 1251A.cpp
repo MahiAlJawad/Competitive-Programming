@@ -76,38 +76,45 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
 
-
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll t;
+    cin>>t;
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        string s;
+        cin>>s;
+        set<char> st;
+        ll i, j;
+        for(i= 0; i<s.size(); )
         {
-            cout<<"No\n";
+            char c= s[i];
+            ll cnt= 0;
+            for(j= i; j<s.size(); j++)
+            {
+                if(c== s[j]) cnt++;
+                else break;
+            }
+            i+= cnt;
+            if(cnt== 1 || cnt%2== 1) st.insert(c);
         }
-        else cout<<"Yes\n";
+        string res= "";
+        forit(it, st)
+        {
+            res+= *it;
+        }
+        cout<<res<<"\n";
     }
-
-
 
     return 0;
 }

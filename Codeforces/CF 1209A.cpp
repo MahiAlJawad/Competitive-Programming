@@ -83,30 +83,37 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
+    //fasterInOut;
+    ll n, i;
+    cin>>n;
+    vector<ll> arr;
+    vector<bool> vis(n+5, 0);
 
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        ll x;
+        cin>>x;
+        arr.pb(x);
     }
 
+    sort(arr.begin(), arr.end());
+
+    ll j, cnt= 0;
+    for(i= 0; i<n; i++)
+    {
+        if(!vis[i])
+        {
+            cnt++;
+            for(j= i; j<n; j++)
+            {
+                if(arr[j]%arr[i]== 0)
+                {
+                    vis[j]= 1;
+                }
+            }
+        }
+    }
+    cout<<cnt<<"\n";
 
 
     return 0;

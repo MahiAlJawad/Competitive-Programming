@@ -83,31 +83,38 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll a1, a2, k1, k2, n, i;
+    cin>>a1>>a2>>k1>>k2>>n;
+
+    ll x= ((k1-1)*a1)+((k2-1)*a2);
+
+    ll mn= max((ll)0, (n-x));
+    ll mx= 0;
+    if(k1<k2)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+        x= n/k1;
+        ll t= min(a1, x);
+        mx+= t;
+        n= n- (t*k1);
+
+        x= n/k2;
+        t= min(a2, x);
+        mx+= t;
+    }
+    else
+    {
+        x= n/k2;
+        ll t= min(a2, x);
+        mx+= t;
+        n= n- (t*k2);
+
+        x= n/k1;
+        t= min(a1, x);
+        mx+= t;
     }
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
-    }
-
-
+    cout<<mn<<" "<<mx<<"\n";
 
     return 0;
 }

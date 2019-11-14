@@ -76,38 +76,83 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
+vector <ll> prime;
+vector <ll> mark(1150, 0);
+ll n, k;
+void generatePrimes()
+{
+    prime.pb(1);
+    ll n= 1130, i, j;
+    ll limit= sqrt(n+1);
+    mark[1]= 1;
+    prime.push_back(2);
+    for(i= 4; i<=n; i+= 2)
+        mark[i]= 1;
 
+    for(i= 3; i<=n; i+= 2)
+    {
+        if(!mark[i])
+        {
+            prime.push_back(i);
+            if(i<= limit)
+            {
+                for(j= i*i; j<= n; j+= 2*i)
+                mark[j]= 1;
+            }
+        }
+    }
+}
+
+ll dp[1200][200][16];
+ll solve(ll amt, ll i, ll j)
+{
+    //cout<<"amt: "<<amt<<" i: "<<i<<" prime[i]: "<< prime[i]<<" j: "<<j<<endl;
+    if(prime[i]>n || j<= 0)
+    {
+        if(amt== 0 && j== 0)
+        {
+            //cout<<"GOT IT\n";
+            return 1;
+        }
+        else
+        {
+            //cout<<"ZERO\n";
+            return 0;
+        }
+    }
+
+
+    if(dp[amt][i][j]!= -1) return dp[amt][i][j];
+
+    ll x= 0, y= 0;
+    if(amt-prime[i]>=0) x= solve(amt-prime[i], i+1, j-1);
+    y= solve(amt, i+1, j);
+
+    return dp[amt][i][j]= x+y;
+}
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    //fin(in);
+    //fout(out);
+
+    generatePrimes();
+    memneg(dp);
+    while(scanf("%lld%lld", &n, &k))
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+        if(n== 0 && k== 0) break;
+
+        printf("%lld\n", solve(n, 1, k));
     }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
-    }
-
-
 
     return 0;
 }

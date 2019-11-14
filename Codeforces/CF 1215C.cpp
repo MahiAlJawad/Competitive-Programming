@@ -79,36 +79,83 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
-
-
+struct data
+{
+    ll x, y;
+    data(ll a,ll b)
+    {
+        x= a;
+        y= b;
+    }
+};
+vector<data> ans;
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    //fasterInOut;
+    ll n, i;
+    cin>>n;
+    string a, b;
+    cin>>a>>b;
+    queue<ll> sa, sb;
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    for(i= 0; i<n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        if(a[i]!= b[i])
         {
-            cout<<"No\n";
+            if(a[i]== 'a')
+            {
+                sa.push(i+1);
+            }
+            else
+            {
+                sb.push(i+1);
+            }
         }
-        else cout<<"Yes\n";
     }
 
+    while(sa.size()>=2)
+    {
+        ll x= sa.front();
+        sa.pop();
+        ll y= sa.front();
+        sa.pop();
+        ans.pb(data(x, y));
+    }
 
+    while(sb.size()>=2)
+    {
+        ll x= sb.front();
+        sb.pop();
+        ll y= sb.front();
+        sb.pop();
+        ans.pb(data(x, y));
+    }
 
+    if(sa.empty() && sb.empty())
+    {
+        cout<<ans.size()<<"\n";
+        for(i= 0; i<ans.size(); i++)
+        {
+            cout<<ans[i].x<<" "<<ans[i].y<<"\n";
+        }
+
+    }
+    else if(sa.size()== 1 && sb.size()== 1)
+    {
+        ll x= sa.front();
+        ll y= sb.front();
+        ans.pb(data(x, x));
+        ans.pb(data(x, y));
+        cout<<ans.size()<<"\n";
+        for(i= 0; i<ans.size(); i++)
+        {
+            cout<<ans[i].x<<" "<<ans[i].y<<"\n";
+        }
+    }
+    else
+    {
+        cout<<"-1\n";
+    }
     return 0;
 }
 

@@ -79,35 +79,74 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 
 using namespace std;
 
+bool IsInside(ll x1, ll y1, ll x2, ll y2, ll x3, ll y3, ll x4, ll y4)
+{
+    ll a1, a2, b1, b2;
+    a1= max(x1, x3);
+    a2= min(x2, x4);
+    b1= max(y1, y3);
+    b2= min(y2, y4);
+    if((a1<=a2) && (b1<=b2)) return 1;
+    else return 0;
+}
 
+ll GetArea(ll x1, ll y1, ll x2, ll y2)
+{
+    ll area= (abs(x1-x2))*(abs(y1-y2));
+    return area;
+}
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6;
+    cin>>x1>>y1>>x2>>y2>>x3>>y3>>x4>>y4>>x5>>y5>>x6>>y6;
+
+    ll area1= GetArea(x1, y1, x2, y2);
+    ll area2, area3, area4;
+    bool f1= 0, f2= 0;
+    ll a1, b1, a2, b2, p1, q1, p2, q2;
+    if(IsInside(x1, y1, x2, y2, x3, y3, x4, y4))
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+
+        f1= 1;
+         a1= max(x1, x3);
+         a2= min(x2, x4);
+         b1= max(y1, y3);
+         b2= min(y2, y4);
+        area2= GetArea(a1, b1, a2, b2);
+    }
+    else
+    {
+        area2= 0;
     }
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    if(IsInside(x1, y1, x2, y2, x5, y5, x6,y6))
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        f2= 1;
+         p1= max(x1, x5);
+         p2= min(x2, x6);
+         q1= max(y1, y5);
+         q2= min(y2, y6);
+        area3= GetArea(p1, q1, p2, q2);
     }
+    else area3= 0;
 
+    //cout<<a1<<" "<<b1<<" "<<a2<<" "<<b2<<"\n"<<p1<<" "<<q1<<" "<<p2<<" "<<q2<<endl;
 
+    if(f1 && f2 && IsInside(a1, b1, a2, b2, p1, q1, p2, q2))
+    {
+        ll r1, s1, r2, s2;
+        r1= max(a1, p1);
+        r2= min(a2, p2);
+        s1= max(b1, q1);
+        s2= min(b2, q2);
+        area4= GetArea(r1, s1, r2, s2);
+    }
+    else area4= 0;
+    //cout<<"area1: "<<area1<<" area2: "<<area2<<" area3: "<<area3<<" area4: "<<area4<<"\n";
+    if(area1== (area2+area3-area4)) cout<<"NO\n";
+    else cout<<"YES\n";
 
     return 0;
 }

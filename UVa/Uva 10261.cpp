@@ -76,38 +76,105 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
+int dp[205][10005], dir[205][10005], n, p;
+int cars[205];
 
+ll solve(int i, int w1, int w2)
+{
+    //cout<<"i: "<<i<<" w1: "<<w1<<" w2: "<<w2<<endl;
+    if(i== p+1 || (w1== 0 && w2== 0))
+    {
+        //cout<<"returned here\n";
+        return 0;
+    }
 
+    if(dp[i][w1]!= -1) return dp[i][w1];
+
+    int x= 0, y= 0;
+
+    if((w1-cars[i])>=0) x= 1+ solve(i+1, w1-cars[i], w2);
+    if((w2-cars[i])>=0) y= 1+ solve(i+1, w1, w2-cars[i]);
+
+    if(x== 0 && y== 0)
+    {
+        return dp[i][w1]= 0;
+    }
+    if(x>y)
+    {
+        dir[i][w1]= 1;
+        return dp[i][w1]= x;
+    }
+    else
+    {
+        dir[i][w1]= 2;
+        return dp[i][w1]= y;
+    }
+}
+vector<int> ans;
+
+void getDir(int i, int w1, int w2)
+{
+    if(i== p+1 || (w1== 0 && w2== 0) || dir[i][w1]== -1)
+    {
+        return;
+    }
+    if(dir[i][w1]== 1)
+    {
+        //cout<<"i: "<<i<<" port\n";
+        ans.pb(1);
+        getDir(i+1, w1-cars[i], w2);
+    }
+    else if(dir[i][w1]== 2)
+    {
+        //cout<<"i: "<<i<<" starbord\n";
+        ans.pb(2);
+        getDir(i+1, w1, w2-cars[i]);
+    }
+    else return;
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    int t, tc= 0;
+    scanf("%d", &t);
+    while(t--)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
-
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
-    {
-        ll x= q- mp[i];
-        if(x>=k)
+        tc++;
+        if(tc!= 1) printf("\n");
+        scanf("%d", &n);
+        memz(cars);
+        memneg(dp);
+        memneg(dir);
+        ans.clear();
+        int i= 1, k;
+        while(scanf("%d", &k) && k!= 0)
         {
-            cout<<"No\n";
+            cars[i]= k;
+            i++;
         }
-        else cout<<"Yes\n";
+        p= i-1;
+
+//        for(i= 1; i<=p; i++)
+//        {
+//            cout<<cars[i]<<" ";
+//        }
+//        cout<<endl;
+        printf("%d\n", solve(1, n*100, n*100));
+        getDir(1, n*100, n*100);
+        for(i= 0; i<ans.size(); i++)
+        {
+            if(ans[i]== 1) printf("port\n");
+            else printf("starboard\n");
+        }
     }
-
-
 
     return 0;
 }

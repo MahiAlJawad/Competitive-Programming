@@ -83,30 +83,22 @@ using namespace std;
 
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    //fasterInOut;
+    ll l, r;
+    cin>>l>>r;
 
-    ll sum= 0;
+    r= min(r, l+2018);
 
-    for(i= 1; i<=n; i++)
+    ll i, j, mn= inf;
+    for(i= l; i<=r; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        for(j= i+1; j<=r; j++)
         {
-            cout<<"No\n";
+            ll x= (i*j)%2019;
+            mn= min(mn, x);
         }
-        else cout<<"Yes\n";
     }
-
+    cout<<mn<<"\n";
 
 
     return 0;

@@ -76,38 +76,92 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 #define sortArr(arr, sz) sort(arr+1, arr+(sz+1));/*Sorts an array from index 1 to index 'sz'*/
 /*Macro ends here*/
 
+/*Frequently used Function starts here*/
+//Bit set
+/*ll Set(ll mask, ll pos){return mask = (mask OR ((ll)1<<pos));}*//*Sets pos'th bit HIGH of the mask and returns*//**Replace OR by Bitwise OR sign when using**/
+bool check(ll mask, ll pos){return (bool)(mask & ((ll)1<<pos));}/*Checks if the pos'th bit is HIGH or not of the mask*/
+/*Frequently used Function ends here*/
 
 using namespace std;
 
+ll d[35], v[35], dp[1005][35], n, w, dir[1005][35];
 
 
+
+ll solve(ll time, ll i)
+{
+    if(time<= 0 || i>= n+1)
+    {
+        return 0;
+    }
+    if(dp[time][i]!= -1) return dp[time][i];
+
+    ll x= 0, y= 0;
+
+    if((time-(3*w*d[i]))>=0)
+    {
+        x= v[i]+ solve((time-(3*w*d[i])), i+1);
+    }
+    y= solve(time, i+1);
+
+    if(x>y)
+    {
+        dp[time][i]= x;
+        dir[time][i]= 1;
+    }
+    else
+    {
+        dp[time][i]= y;
+        dir[time][i]= 0;
+    }
+    return dp[time][i];
+}
+vector<ll> dr;
+void solPrint(ll time, ll i)
+{
+    if(dir[time][i]== -1) return;
+    if(dir[time][i]== 1)
+    {
+        dr.pb(i);
+        solPrint((time-(3*w*d[i])), i+1);
+    }
+    else
+    {
+        solPrint(time, i+1);
+    }
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
-    {
-        ll x;
-        cin>>x;
-        mp[x]++;
-    }
+    //fasterInOut;
+    //fin(in);
+    //fout(out);
+    ll t, tc= 0;
 
-    ll sum= 0;
-
-    for(i= 1; i<=n; i++)
+    while(scanf("%lld%lld", &t, &w)== 2)
     {
-        ll x= q- mp[i];
-        if(x>=k)
+        tc++;
+        if(tc!= 1) printf("\n");
+
+        ll i;
+        scanf("%lld", &n);
+        memz(d);
+        memz(v);
+        memneg(dp);
+        memneg(dir);
+        dr.clear();
+        for(i= 1; i<=n; i++)
         {
-            cout<<"No\n";
+            scanf("%lld%lld", &d[i], &v[i]);
         }
-        else cout<<"Yes\n";
+        printf("%lld\n", solve(t, 1));
+        solPrint(t, 1);
+        printf("%d\n", dr.size());
+        for(i= 0; i<dr.size(); i++)
+        {
+            printf("%lld %lld\n", d[dr[i]], v[dr[i]]);
+        }
+
     }
-
-
 
     return 0;
 }

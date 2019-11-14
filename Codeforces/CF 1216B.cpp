@@ -80,33 +80,48 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 using namespace std;
 
 
+struct data
+{
+    ll x, i;
 
+    data(ll a, ll b)
+    {
+        x= a;
+        i= b;
+    }
+};
+
+bool cmp(data a, data b)
+{
+    return a.x>b.x;
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+
+    ll n, i;
+    cin>>n;
+    vector<data> v;
+    for(i= 1; i<=n; i++)
     {
         ll x;
         cin>>x;
-        mp[x]++;
+        v.pb(data(x, i));
     }
+    sort(v.begin(), v.end(), cmp);
 
-    ll sum= 0;
+    ll total= 0;
 
-    for(i= 1; i<=n; i++)
+    for(i= 0; i<n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        total+= (v[i].x*i+1);
     }
-
+    cout<<total<<"\n";
+    for(i= 0; i<n; i++)
+    {
+        cout<<v[i].i<<" ";
+    }
+    cout<<"\n";
 
 
     return 0;

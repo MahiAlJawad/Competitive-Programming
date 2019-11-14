@@ -80,35 +80,77 @@ the LEFTMOST index where there is any integer which is GREATER than 'elem'.*/
 using namespace std;
 
 
+ll arr[1005][1005];
 
+vector<ll> devisors(ll n)
+{
+    ll i;
+    ll lim= sqrt(n+1);
+    vector<ll> ans;
+    for(i= 1; i<=lim; i++)
+    {
+        if(n%i== 0)
+        {
+            ans.pb(i);
+            ans.pb((n/i));
+        }
+    }
+    return ans;
+}
 int main()
 {
-    fasterInOut;
-    ll n, k, q;
-    cin>>n>>k>>q;
-    ll i;
-    map<ll, ll> mp;
-    for(i= 1; i<=q; i++)
+    //fasterInOut;
+    ll n, i, j, k;
+    cin>>n;
+    vector<ll> ans(n+5);
+    for(i= 1; i<=n; i++)
     {
-        ll x;
-        cin>>x;
-        mp[x]++;
+        for(j= 1; j<=n; j++)
+        {
+            cin>>arr[i][j];
+        }
     }
 
-    ll sum= 0;
+
+    vector<ll> v= devisors(arr[1][2]);
+//    for(i= 0; i<v.size(); i++) cout<<v[i]<<" ";
+//    cout<<endl;
+
+    for(i= 0; i<v.size(); i++)
+    {
+        //cout<<"i: "<<v[i]<<"\n";
+        ll x= v[i];
+        ans[2]= x;
+        ans[1]= arr[1][2]/ans[2];
+
+        for(j= 3; j<=n; j++)
+        {
+            if(ans[j-1]!= 0) ans[j]= arr[j-1][j]/ans[j-1];
+            else ans[j]= -1;
+        }
+
+        bool f= 1;
+
+        for(j= 1; j<=n; j++)
+        {
+            for(k= j+1; k<=n; k++)
+            {
+                if(ans[j]*ans[k]!= arr[j][k])
+                {
+                    f= 0;
+                    break;
+                }
+            }
+            if(f== 0) break;
+        }
+        if(f) break;
+    }
 
     for(i= 1; i<=n; i++)
     {
-        ll x= q- mp[i];
-        if(x>=k)
-        {
-            cout<<"No\n";
-        }
-        else cout<<"Yes\n";
+        cout<<ans[i]<<" ";
     }
-
-
-
+    cout<<"\n";
     return 0;
 }
 
