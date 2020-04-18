@@ -8,6 +8,30 @@ typedef struct Trie //If we use typedef than we can use 'Trie' as type instead o
 
 } Trie;
 
+//Returns concatenated string a+b with a new reference
+char* Concate(char* a, char* b)
+{
+    int len_a= 0, len_b= 0,i;
+    for(i= 0; a[i]; i++) len_a++;
+    for(i= 0; b[i]; i++) len_b++;
+    char* s= (char*) malloc(sizeof(char)*(len_a+len_b+1));
+    for(i= 0; i<len_a; i++) s[i]= a[i];
+    for(int j= 0; j<len_b; j++, i++)
+    {
+        s[i]= b[j];
+    }
+    s[i]= '\0';
+    return s;
+}
+
+//returns string of a single character char ch input
+char* charToStr(char ch)
+{
+    char* s= (char*) malloc(sizeof(char)*2);
+    s[0]= ch;
+    s[1]= '\0';
+    return s;
+}
 /** Initialize your data structure here. */
 
 Trie *trieCreate()
@@ -25,7 +49,7 @@ Trie *trieCreate()
 void trieInsert(Trie* obj, char * word)
 {
     Trie *cur= obj;
-    for(int i= 0; word[i]!= NULL; i++)
+    for(int i= 0; word[i]; i++)
     {
 
         int id= word[i]-'a';
@@ -76,25 +100,29 @@ void trieFree(Trie* obj)
     free(obj);
 }
 
+//Prints all the words saved in Trie in dictionary order taking Trie *root and empty string as input
+void triePrint(Trie* obj, char* s)
+{
+    if(obj== NULL) return;
+    if(obj->endmark)
+    {
+        puts(s);
+    }
+    for(int i= 0; i<26; i++)
+    {
+        char ch= i+'a';
+        triePrint(obj->next[i], Concate(s, charToStr(ch)));
+    }
+}
 int main()
 {
-    //Written to only work with lowercase letters.
-    Trie *root= trieCreate();
-
+    Trie* root= trieCreate();
+    trieInsert(root, "mahin");
+    trieInsert(root, "abdullah");
+    trieInsert(root, "abd");
     trieInsert(root, "mahi");
 
-    trieInsert(root, "maruf");
+    triePrint(root, "");
 
-    if(trieSearch(root, "mahim")) printf("mahim found\n");
-    else printf("Mahim not found\n");
-    if(trieSearch(root, "mahi")) printf("mahi found\n");
-    else printf("Mahi not found\n");
-
-    if(trieStartsWith(root, "mam")) printf("found\n");
-    else printf("not found\n");
-    if(trieStartsWith(root, "ma")) printf("found\n");
-    else printf("not found\n");
-
-    trieFree(root);
     return 0;
 }
